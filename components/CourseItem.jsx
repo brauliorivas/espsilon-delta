@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import CompletionBar from "./CompletionBar";
+import RedirectButton from "./RedirectButton";
+
 export default function CourseItem({
     imgSrc,
     width,
@@ -22,19 +25,11 @@ export default function CourseItem({
             </div>
             <h3 className="title">{title}</h3>
             <div className="progress">
-                <div className="completion-bar">
-                    <div
-                        className="completion-progress"
-                        style={{ width: completed }}
-                    ></div>
-                </div>
+                <CompletionBar completed={completed} />
                 <p className="completion-text">{completed}</p>
             </div>
-            <div className="button">
-                <Link href={courseLink}>
-                    <p>Seguir aprendiendo</p>
-                </Link>
-            </div>
+            
+            <RedirectButton width="150px" height="30px" fontSize="14px" courseLink={courseLink} action="Seguir aprendiendo"/>
 
             <style jsx>{`
                 .container {
@@ -80,21 +75,6 @@ export default function CourseItem({
 
                 .completion-text {
                     margin-top: 5px;
-                }
-
-                .button {
-                    width: 150px;
-                    height: 30px;
-                    font-size: 14px;
-                    background-color: var(--purple);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .button p {
-                    color: var(--white);
-                    text-align: center;
                 }
             `}</style>
         </div>
