@@ -1,26 +1,9 @@
 "use client";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const router = useRouter();
-    const supabase = createClientComponentClient();
-
-    const handleSignIn = async () => {
-        await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-        router.refresh()
-    }
-
     return (
         <main>
             <header>
@@ -34,14 +17,29 @@ export default function Login() {
             <section>
                 <h3>Iniciar Sesión</h3>
 
-                <form>
+                <form action="/auth/sign-in" method="post">
                     <label htmlFor="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" onChange={(e) => setEmail(e.target.value)} value={email} />
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    />
                     <label htmlFor="password">Contraseña</label>
-                    <input type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="********"
+                        required
+                    />
 
                     <div className="auth_buttton">
-                        <button className="submit" type="submit" onClick={handleSignIn}>
+                        <button
+                            className="submit"
+                            type="submit"
+                        >
                             Iniciar Sesión
                         </button>
                         <div className="auth_login">
