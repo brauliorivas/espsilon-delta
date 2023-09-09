@@ -52,7 +52,7 @@ export default function Header() {
                 </div>
 
                 <div className="profile">
-                    <Link href="/profile">
+                    <Link href="/home/profile">
                         <div className="button">
                             <Image
                                 src="/profile-fill.png"

@@ -1,3 +1,5 @@
+"use client";
+
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -5,22 +7,19 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
     const supabase = createClientComponentClient();
 
-    const handleSignUp = async () => {
-        await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                emailRedirectTo: `${location.origin}/auth/callback`,
-            },
-        });
-        router.refresh();
-    };
+    const handleSignIn = async () => {
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+        router.refresh()
+    }
 
     return (
         <main>
@@ -33,34 +32,22 @@ export default function Home() {
             </header>
 
             <section>
-                <h3>Crear una cuenta</h3>
+                <h3>Iniciar Sesión</h3>
 
                 <form>
                     <label htmlFor="email">Correo electrónico</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
-                    />
+                    <input type="email" id="email" name="email" onChange={(e) => setEmail(e.target.value)} value={email} />
                     <label htmlFor="password">Contraseña</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                    />
+                    <input type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
 
                     <div className="auth_buttton">
-                        <button className="submit" type="submit" onClick={handleSignUp}>
-                            Registrarse
+                        <button className="submit" type="submit" onClick={handleSignIn}>
+                            Iniciar Sesión
                         </button>
                         <div className="auth_login">
-                            <p>¿Ya tienes una cuenta?</p>
-                            <Link href="/login" className="login-link">
-                                <p className="login">Iniciar sesión</p>
+                            <p>¿No tienes una cuenta?</p>
+                            <Link href="/" className="login-link">
+                                <p className="login">Registrate</p>
                             </Link>
                         </div>
                     </div>
@@ -79,7 +66,7 @@ export default function Home() {
                         height={40}
                         alt="Google logo"
                     />
-                    <p>Registrarse con Google</p>
+                    <p>Iniciar sesión con Google</p>
                 </button>
                 <button className="signup_alternative-button">
                     <Image
@@ -88,7 +75,7 @@ export default function Home() {
                         height={40}
                         alt="Github logo"
                     />
-                    <p>Registrarse con Github</p>
+                    <p>Iniciar sesión con Github</p>
                 </button>
             </section>
 
