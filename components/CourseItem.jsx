@@ -21,6 +21,7 @@ export default function CourseItem({
                     height={100}
                     alt={title}
                     layout="responsive"
+                    priority={true}
                 />
             </div>
             <h3 className="title">{title}</h3>

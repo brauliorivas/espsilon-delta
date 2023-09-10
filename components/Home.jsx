@@ -1,31 +1,37 @@
 "use client";
 
-import CourseItem from "@/components/CourseItem";
+import CourseItem from "./CourseItem";
 
-export default function Page() {
+export default function Home({ cursos }) {
     return (
         <main>
             <h2>Continua aprendiendo</h2>
             <div className="container">
-                <CourseItem
-                    imgSrc="/fp_course.jpg"
-                    width="300px"
-                    height="300px"
-                    title="Fundamentos de programación"
-                    completed="50%"
-                    courseLink="/courses"
-                />
+                {cursos.map((curso) => (
+                    <CourseItem
+                        key={curso.id}
+                        imgSrc={curso.image_url}
+                        width="300px"
+                        height="300px"
+                        title={curso.nombre}
+                        completed="50%"
+                        courseLink="/courses"
+                    />
+                ))}
             </div>
             <h2>Recomendaciones</h2>
             <div className="container">
-                <CourseItem
-                    imgSrc="/fp_course.jpg"
-                    width="300px"
-                    height="300px"
-                    title="Fundamentos de programación"
-                    completed="50%"
-                    courseLink="/courses"
-                />
+                {cursos.map((curso) => (
+                    <CourseItem
+                        key={curso.id}
+                        imgSrc={curso.image_url}
+                        width="300px"
+                        height="300px"
+                        title={curso.nombre}
+                        completed="50%"
+                        courseLink="/courses"
+                    />
+                ))}
             </div>
             <style jsx>{`
                 main {
