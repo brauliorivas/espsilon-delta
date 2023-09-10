@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import CompletionBar from "./CompletionBar";
+import CompletionBar from "@/components/CompletionBar";
 
 export default function CourseDescription({
     imgSrc,
@@ -16,7 +16,7 @@ export default function CourseDescription({
             <p className="description">{description}</p>
             <div className="todos">
                 <Image src="/todo-line.png" width={25} height={25} alt="todo" />
-                <p className="todos__text">{classes} Clases</p>
+                <p className="todos__text">{classes} {classes === 1 ? 'Clase' : 'Clases'}</p>
             </div>
             <style jsx>{`
                 .container {

@@ -1,23 +1,25 @@
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+
 import Tema from "@/components/Tema";
 
-export async function generateStaticParams() {
-    const cursos = ["fp", "poo", "cuv"];
-    const temas = ["tema1", "tema2", "tema3", "tema4", "tema5", "tema6", "tema7", "tema8", "tema9", "tema10"];
+export default async function Page(req) {
+    const tema_id = req.params.tema;
+    const curso_acron = req.params.curso;
 
-    const allRoutes = [];
-    for (const curso of cursos) {
-        for (const tema of temas) {
-            allRoutes.push({ curso: curso, tema: tema });
-        }
-    }
+    const supabase = createServerComponentClient({ cookies });
+
+    let chunks = await supabase.from('chunk').select('*').eq('tema_id', tema_id);
+    chunks = chunks.data;
+    let problemas_multiple = await supabase.from('problema_multiple').select('*').eq('tema_id', tema_id);
+    problemas_multiple = problemas_multiple.data;
+    let problemas_programacion = await supabase.from('problema_programacion').select('*').eq('tema_id', tema_id);
+    problemas_programacion = problemas_programacion.data;
     
-    return allRoutes;
-}
 
-export default function Page({ params }) {
     return (
         <>
-            <Tema params={params} />
+            <Tema linkCurso={`/home/cursos/${curso_acron}`} />
         </>
     )
 }

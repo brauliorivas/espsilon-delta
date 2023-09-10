@@ -1,6 +1,6 @@
 "use client";
 
-import RedirectButton from "./RedirectButton";
+import RedirectButton from "@/components/RedirectButton"
 
 export default function ProjectDescription({ nombre, descripcion, ruta }) {
     return (

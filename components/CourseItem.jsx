@@ -1,8 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 
-import CompletionBar from "./CompletionBar";
-import RedirectButton from "./RedirectButton";
+import CompletionBar from "@/components/CompletionBar"
+import RedirectButton from "@/components/RedirectButton"
 
 export default function CourseItem({
     imgSrc,

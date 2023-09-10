@@ -1,16 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import TopicCompletionBar from "./TopicCompletionBar";
+import TopicCompletionBar from "@/components/TopicCompletionBar"
 
-export default function Tema({ params }) {
+export default function Tema({ linkCurso }) {
     const [complete, setComplete] = useState("50%");
-
-    const cursoUrl = "/home/cursos/" + params.curso;
 
     return (
         <main>
-            <TopicCompletionBar completed={complete} courseLink={cursoUrl} />
+            <TopicCompletionBar completed={complete} courseLink={linkCurso} />
             <h1>¿Qué significa programar?</h1>
             <p>Lorem ipsum </p>
 

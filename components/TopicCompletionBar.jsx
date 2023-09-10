@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import CompletionBar from "./CompletionBar";
+import CompletionBar from "@/components/CompletionBar";
 
 export default function TopicCompletionBar({ completed, courseLink}) {
     return (

@@ -1,55 +1,29 @@
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+
 import Curso from "@/components/Curso";
 
-export async function generateStaticParams() {
-    const cursos = ["fp", "poo", "cuv"];
+export default async function Page(req) {
+    const supabase = createServerComponentClient({ cookies });
+    
+    const acronimo = req.params.curso;
 
-    return cursos.map((curso) => ({
-        curso: curso,
-    }));
-}
+    let data = await supabase.from("curso").select("*").eq('acronimo', acronimo);
+    const curso = data.data[0];
+    data = await supabase.from("tema").select("*").eq('curso_id', curso.id); 
+    const temas = data.data;
 
-export default function Page({ params }) {
-    const data = {
-        curso: 'Fundamentos de Programación',
-        icon: "/java.png",
-        completed: 50,
-        description:
-            "Aprende los conceptos fundamentales de la programación orientada a objetos en Java",
-        classes: 10,
+    const data1 = {
         proyecto: {
             title: "Minecraft",
             description: "Crea tu propio Minecraft",
             route: "/home/proyectos/minecraft",
         },
-        temas: [
-            "Introducción a la programación orientada a objetos",
-            "Clases y objetos",
-            "Herencia y polimorfismo",
-            "Excepciones",
-            "Entrada y salida de datos",
-            "Colecciones",
-            "Expresiones lambda",
-            "Programación funcional",
-            "Programación concurrente",
-            "Programación de interfaces gráficas",
-        ],
-        temas_links: [
-            "/home/cursos/fp/tema1",
-            "/home/cursos/fp/tema2",
-            "/home/cursos/fp/tema3",
-            "/home/cursos/fp/tema4",
-            "/home/cursos/fp/tema5",
-            "/home/cursos/fp/tema6",
-            "/home/cursos/fp/tema7",
-            "/home/cursos/fp/tema8",
-            "/home/cursos/fp/tema9",
-            "/home/cursos/fp/tema10",
-        ]
     };
 
     return (
         <>
-            <Curso data={data} proyecto={data.proyecto}/>
+            <Curso curso={curso} temas={temas} proyecto={data1.proyecto}/>
         </>
     );
 }

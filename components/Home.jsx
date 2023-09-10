@@ -1,6 +1,6 @@
 "use client";
 
-import CourseItem from "./CourseItem";
+import CourseItem from "@/components/CourseItem";
 
 export default function Home({ cursos }) {
     return (
@@ -15,7 +15,7 @@ export default function Home({ cursos }) {
                         height="300px"
                         title={curso.nombre}
                         completed="50%"
-                        courseLink="/courses"
+                        courseLink={`/home/cursos/${curso.acronimo}`}
                     />
                 ))}
             </div>
@@ -29,7 +29,7 @@ export default function Home({ cursos }) {
                         height="300px"
                         title={curso.nombre}
                         completed="50%"
-                        courseLink="/courses"
+                        courseLink={`/home/cursos/${curso.acronimo}`}
                     />
                 ))}
             </div>

@@ -4,16 +4,16 @@ import CourseDescription from "@/components/CourseDescription";
 import ProjectDescription from "@/components/ProjectDescription";
 import Topic from "@/components/Topic";
 
-export default function Curso({ data, proyecto }) {
+export default function Curso({ curso, temas, proyecto }) {
     return (
         <main>
             <section className="left__pane">
                 <div>
                     <CourseDescription
-                        imgSrc={data.icon}
-                        curso={data.curso}
-                        description={data.description}
-                        classes={data.classes}
+                        imgSrc={curso.icon_url}
+                        curso={curso.nombre}
+                        description={curso.descripcion}
+                        classes={temas.length}
                     />
                     <h2 className="proyecto">Proyecto de Curso</h2>
                     <ProjectDescription
@@ -25,13 +25,13 @@ export default function Curso({ data, proyecto }) {
             </section>
             <section className="right__pane">
                 <div className="progreso">
-                    {data.temas.map((tema, idx) => (
+                    {temas.map((tema, idx) => (
                         <Topic
-                            key={idx}
-                            tema={tema}
+                            key={tema.id}
+                            tema={tema.Nombre}
                             completed={false}
                             marginLeft={Math.sin(idx)}
-                            link={data.temas_links[idx]}
+                            link={`/home/cursos/${curso.acronimo}/${tema.id}`}
                         />
                     ))}
                 </div>
