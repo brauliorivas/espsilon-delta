@@ -9,9 +9,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className={solway.className}>
-                {children}
-            </body>
+            <body className={solway.className}>{children}</body>
         </html>
     );
 }

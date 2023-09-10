@@ -36,6 +36,7 @@ export default function Cursos({ cursos }) {
             <style jsx>{`
                 main {
                     width: 100%;
+                    min-height: 100vh;
                     background-color: var(--background-dark);
                     padding-top: 25px;
                     padding-left: 50px;

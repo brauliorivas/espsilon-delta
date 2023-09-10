@@ -28,7 +28,7 @@ export default function Curso({ curso, temas, proyecto }) {
                     {temas.map((tema, idx) => (
                         <Topic
                             key={tema.id}
-                            tema={tema.Nombre}
+                            tema={tema.nombre}
                             completed={false}
                             marginLeft={Math.sin(idx)}
                             link={`/home/cursos/${curso.acronimo}/${tema.id}`}
