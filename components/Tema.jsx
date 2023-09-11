@@ -8,8 +8,6 @@ import Chunk from "@/components/Chunk";
 import ProblemaMultiple from "@/components/ProblemaMultiple";
 import ProblemaProgramacion from "@/components/ProblemaProgramacion";
 
-import ThemeContext from "@/context/ThemeContext";
-
 export default function Tema({
     nombre,
     chunks,
@@ -30,8 +28,9 @@ export default function Tema({
         <ProblemaMultiple
             key={problema.orden}
             problema={problema.problema}
-            explicacion={problema.explicacion}
             opciones={problema.opciones}
+            solucion={problema.solucion}
+            explicacion={problema.explicacion}
         />
     ));
     const listaProblemasProgramacion = problemas_programacion.map(

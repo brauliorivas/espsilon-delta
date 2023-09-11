@@ -56,6 +56,9 @@ export default function TopicCompletionBar({ completed, courseLink }) {
                             padding-left: 20px;
                             padding-right: 20px;
                         }
+                        .moon:hover {
+                            cursor: pointer;
+                        }
                     `}</style>
                 </div>
             )}

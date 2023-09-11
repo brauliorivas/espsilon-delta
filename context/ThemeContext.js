@@ -40,6 +40,7 @@ export function ThemeContextProvider(props) {
 
     function toggleDarkClassToBody() {
         document.getElementById("contenido_tema").classList.toggle("dark");
+        document.getElementById("problem__dialog-grade").classList.toggle("dark");
     }
 
     function setValueToLocalStorage() {
