@@ -2,7 +2,7 @@
 
 import { ThemeContextProvider } from "@/context/ThemeContext";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TopicCompletionBar from "@/components/TopicCompletionBar";
 import Chunk from "@/components/Chunk";
 import ProblemaMultiple from "@/components/ProblemaMultiple";
@@ -11,17 +11,25 @@ import ProblemaProgramacion from "@/components/ProblemaProgramacion";
 export default function Tema({
     nombre,
     chunks,
+    completed_chunks,
     problemas_multiple,
+    completed_problemas_multiple,
     problemas_programacion,
+    completed_problemas_programacion,
     linkCurso,
 }) {
-    const [complete, setComplete] = useState("50%");
+    const [complete, setComplete] = useState((completed_chunks.length + completed_problemas_multiple.length + completed_problemas_programacion.length) / (chunks.length + problemas_multiple.length + problemas_programacion.length) * 100);
+    const [completed, setCompleted] = useState(completed_chunks.length + completed_problemas_multiple.length + completed_problemas_programacion.length + 1);
 
     const listaChunks = chunks.map((chunk) => (
         <Chunk
             key={chunk.orden}
             contenido={chunk.contenido}
             animacion_url={chunk.animacion_url}
+            id={chunk.id}
+            completed={completed_chunks.map((chunk) => chunk.id).includes(chunk.id) ? true : false}
+            completed_items={completed}
+            setCompleted={setCompleted}
         />
     ));
     const listaProblemasMultiple = problemas_multiple.map((problema) => (
@@ -31,6 +39,7 @@ export default function Tema({
             opciones={problema.opciones}
             solucion={problema.solucion}
             explicacion={problema.explicacion}
+            id={problema.id}
         />
     ));
     const listaProblemasProgramacion = problemas_programacion.map(
@@ -42,6 +51,7 @@ export default function Tema({
                 solucion_script={problema.solucion_script}
                 entradas={problema.entrada}
                 salidas={problema.salida}
+                id={problema.id}
             />
         )
     );
@@ -55,11 +65,11 @@ export default function Tema({
         <ThemeContextProvider>
             <main id="contenido_tema">
                 <TopicCompletionBar
-                    completed={complete}
+                    completed={`${complete}%`}
                     courseLink={linkCurso}
                 />
                 <h1>{nombre}</h1>
-                {listaContenido}
+                {listaContenido.slice(0, completed)}
                 <style jsx>{`
                     main {
                         width: 100%;

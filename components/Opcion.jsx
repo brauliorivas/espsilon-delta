@@ -4,13 +4,14 @@ export default function Opcion({ identifier, contenido, toggle }) {
     function handleClick() {
         const circle = document.getElementById(`option__circle-fullfilled-${identifier}`);
         circle.classList.toggle('option__circle-fullfilled');
+        toggle(`option__circle-fullfilled-${identifier}`);
     }
 
     return (
         <div className="option">
             <div className="option__circle" onClick={handleClick}>
-                <div id={`option__circle-fullfilled-${identifier}`}></div>
-            </div>
+                <div className="option__black" id={`option__circle-fullfilled-${identifier}`}></div>
+            </div>  
             <p>{contenido}</p>
             <style jsx>{`
                 .option {
