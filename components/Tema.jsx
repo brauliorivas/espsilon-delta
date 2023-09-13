@@ -18,8 +18,16 @@ export default function Tema({
     completed_problemas_programacion,
     linkCurso,
 }) {
-    const [complete, setComplete] = useState((completed_chunks.length + completed_problemas_multiple.length + completed_problemas_programacion.length) / (chunks.length + problemas_multiple.length + problemas_programacion.length) * 100);
     const [completed, setCompleted] = useState(completed_chunks.length + completed_problemas_multiple.length + completed_problemas_programacion.length + 1);
+    const [complete, setComplete] = useState((completed_chunks.length + completed_problemas_multiple.length + completed_problemas_programacion.length) / (chunks.length + problemas_multiple.length + problemas_programacion.length) * 100);
+
+    function updateCompletionBar() {
+        setComplete(completed / (chunks.length + problemas_multiple.length + problemas_programacion.length) * 100);
+    }
+
+    function updateCompletedItems() {
+        setCompleted(completed + 1);
+    }
 
     const listaChunks = chunks.map((chunk) => (
         <Chunk
@@ -28,8 +36,8 @@ export default function Tema({
             animacion_url={chunk.animacion_url}
             id={chunk.id}
             completed={completed_chunks.map((chunk) => chunk.id).includes(chunk.id) ? true : false}
-            completed_items={completed}
-            setCompleted={setCompleted}
+            updateCompletionBar={updateCompletionBar}
+            updateCompletedItems={updateCompletedItems}
         />
     ));
     const listaProblemasMultiple = problemas_multiple.map((problema) => (
@@ -40,6 +48,9 @@ export default function Tema({
             solucion={problema.solucion}
             explicacion={problema.explicacion}
             id={problema.id}
+            completed={completed_problemas_multiple.map((problema) => problema.id).includes(problema.id) ? true : false}
+            updateCompletionBar={updateCompletionBar}
+            updateCompletedItems={updateCompletedItems}
         />
     ));
     const listaProblemasProgramacion = problemas_programacion.map(

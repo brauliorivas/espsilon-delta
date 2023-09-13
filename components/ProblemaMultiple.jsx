@@ -1,19 +1,30 @@
 "use client";
 
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
 import { useEffect, useState } from "react";
 
 import Opcion from "@/components/Opcion";
 
 export default function ProblemaMultiple({
     problema,
+    opciones,
     solucion,
     explicacion,
-    opciones,
+    id,
+    completed,
+    updateCompletionBar,
+    updateCompletedItems,
 }) {
     const [isMathJaxAvailable, setIsMathJaxAvailable] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
+    const [answer, setAnswer] = useState("");
     const [randomOptions, setRandomOptions] = useState(opciones);
     const [isRotated, setRotated] = useState(false);
+    const [style, setStyle] = useState({ display: "none" });
+    const [isDisabled, setIsDisabled] = useState(completed);
+
+    const supabase = createClientComponentClient();
 
     useEffect(() => {
         setRandomOptions(opciones.sort(() => Math.random() - 0.5));
@@ -42,6 +53,49 @@ export default function ProblemaMultiple({
         setRotated(!isRotated);
     }
 
+    useEffect(() => {
+        if (isRotated && answer !== solucion) {
+            setAnswer(solucion);
+        }
+    }, [isRotated]);
+
+    useEffect(() => {
+        if (answer === solucion && isRotated) {
+            handleSubmit();
+        }
+    }, [answer]);
+
+    async function handleSubmit(event) {
+        if (!completed) {
+            if (answer !== solucion) {
+                alert("Uups, esa no es la respuesta correcta");
+            } else {
+                const { data } = await supabase.auth.getUser();
+                const userId = data.user.id;
+
+                try {
+                    const { data, error } = await supabase
+                        .from("completed_item")
+                        .insert([
+                            {
+                                completed_multiple: id,
+                                user_id: userId,
+                            },
+                        ])
+                        .select();
+                    if (error) {
+                        throw error;
+                    }
+                    updateCompletionBar();
+                    updateCompletedItems();
+                    setIsDisabled(!isDisabled);
+                } catch (error) {
+                    alert("Error al entregar el ejercicio");
+                }
+            }
+        }
+    }
+
     return (
         <>
             {isMathJaxAvailable && (
@@ -58,29 +112,50 @@ export default function ProblemaMultiple({
                                 isRotated ? "rotate" : ""
                             }`}
                         >
-                            {!isRotated &&
+                            {isRotated ? (
+                                <div>
+                                    <p className="solution__text">
+                                        {explicacion}
+                                    </p>
+                                </div>
+                            ) : (
                                 randomOptions.map((opcion, idx) => (
                                     <Opcion
                                         key={idx}
                                         contenido={opcion}
                                         identifier={idx}
                                         toggle={setSelectedOption}
+                                        setAnswer={setAnswer}
                                     />
-                                ))}
-                            {isRotated && (
-                                <div>
-                                    <p className="solution__text">{explicacion}</p>
-                                </div>
+                                ))
                             )}
                         </div>
                         <div className="problem__dialog-buttons">
-                            <button className="submit">Comprobar</button>
+                            <button className="submit" onClick={handleSubmit} disabled={isDisabled}>
+                                Comprobar
+                            </button>
                             <button
                                 className="solution"
                                 onClick={rotateSolution}
+                                onMouseEnter={(e) => {
+                                    if (!isRotated) {
+                                        setStyle({ display: "block" });
+                                    }
+                                }}
+                                onMouseLeave={(e) => {
+                                    setStyle({ display: "none" });
+                                }}
                             >
-                                Ver solución
+                                {isRotated ? 'Regresar' : 'Ver solución'}
                             </button>
+                            {
+                                answer !== solucion ? (<div className="solution__alert" style={style}>
+                                    <p>
+                                        Si ves la solución, no contará en tu racha y
+                                        se marcará completado
+                                    </p>
+                                </div>) : null
+                            }
                         </div>
                     </div>
                 </div>
@@ -124,6 +199,8 @@ export default function ProblemaMultiple({
                     border: 1px solid black;
                     padding: 10px;
                 }
+                .solution:hover {
+                }
                 button:hover {
                     cursor: pointer;
                 }
@@ -135,6 +212,18 @@ export default function ProblemaMultiple({
                 }
                 .solution__text {
                     transform: scaleX(-1);
+                }
+                .solution__alert {
+                    z-index: 1;
+                    background-color: var(--grey);
+                    max-width: 200px;
+                    margin-left: 10px;
+                }
+                .option__circle-fullfilled {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 100%;
+                    background-color: black;
                 }
             `}</style>
         </>

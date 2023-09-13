@@ -1,10 +1,11 @@
 "use client";
 
-export default function Opcion({ identifier, contenido, toggle }) {
+export default function Opcion({ identifier, contenido, toggle, setAnswer }) {
     function handleClick() {
         const circle = document.getElementById(`option__circle-fullfilled-${identifier}`);
         circle.classList.toggle('option__circle-fullfilled');
         toggle(`option__circle-fullfilled-${identifier}`);
+        setAnswer(contenido);
     }
 
     return (

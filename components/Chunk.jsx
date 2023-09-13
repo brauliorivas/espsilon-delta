@@ -1,9 +1,29 @@
+'use client';
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
 import Image from "next/image";
 
-export default function Chunk({ contenido, animacion_url, id, completed, completed_items, setCompleted }) {
-    function handleContinue() {
+export default function Chunk({ contenido, animacion_url, id, completed, updateCompletionBar, updateCompletedItems}) {
+    const supabase = createClientComponentClient();
+
+    async function handleContinue(event) {
         if (!completed) {
-            // Updata database
+            const { data } = await supabase.auth.getUser();
+            const userId = data.user.id;
+            try {
+                const { data, error } = await supabase.from('completed_item').insert([{
+                    completed_chunk: id,
+                    user_id: userId,
+                },]).select();
+                if (error) {
+                    throw error;
+                }
+                updateCompletionBar();
+                updateCompletedItems();
+            } catch (error) {
+                alert('Error al marcar como completado');
+            }
         }
     }
 
