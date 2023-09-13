@@ -63,6 +63,9 @@ export default function Tema({
                 entradas={problema.entrada}
                 salidas={problema.salida}
                 id={problema.id}
+                completed={completed_problemas_programacion.map((problema) => problema.id).includes(problema.id) ? true : false}
+                updateCompletionBar={updateCompletionBar}
+                updateCompletedItems={updateCompletedItems}
             />
         )
     );
