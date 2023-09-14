@@ -9,7 +9,7 @@ const nextConfig = {
                 pathname: '/storage/v1/object/sign/imagenes/**',
             }
         ]
-    }
+    },
 }
 
 module.exports = nextConfig
