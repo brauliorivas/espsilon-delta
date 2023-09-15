@@ -57,6 +57,7 @@ export default function Tema({
         (problema) => (
             <ProblemaProgramacion
                 key={problema.orden}
+                lenguaje={problema.lenguaje}
                 problema={problema.problema}
                 explicacion={problema.explicacion}
                 solucion_script={problema.solucion_script}
