@@ -13,10 +13,14 @@
     "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@supabase/supabase-js": "^2.33.1",
     "ace-builds": "^1.24.2",
+    "highlight.js": "^11.8.0",
     "next": "13.4.19",
+    "prism-react-renderer": "^2.0.6",
+    "prismjs": "^1.29.0",
     "react": "18.2.0",
     "react-ace": "^10.1.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-markdown": "^8.0.7"
   },
   "devDependencies": {
     "encoding": "^0.1.13"

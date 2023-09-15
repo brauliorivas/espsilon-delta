@@ -4,8 +4,12 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import Image from "next/image";
 
-export default function Chunk({ contenido, animacion_url, id, completed, updateCompletionBar, updateCompletedItems}) {
+import CodeSnippet from "@/components/CodeSnippet";
+
+export default function Chunk({ contenido, animacion_url, codigo, lenguaje, id, completed, updateCompletionBar, updateCompletedItems}) {
     const supabase = createClientComponentClient();
+
+    const show = typeof(codigo) == 'string';
 
     async function handleContinue(event) {
         if (!completed) {
@@ -30,6 +34,13 @@ export default function Chunk({ contenido, animacion_url, id, completed, updateC
     return (
         <div className="container">
             <p>{contenido}</p>
+            {
+                show ? (
+                    <div className="code-container">
+                        <CodeSnippet code={codigo} language={lenguaje} showLineNumbers={show}/>
+                    </div>
+                ) : null
+            }
             {animacion_url !== null ? (
                 <div className="animation">
                     <Image
@@ -71,6 +82,10 @@ export default function Chunk({ contenido, animacion_url, id, completed, updateC
                 }
                 button:hover {
                     cursor: pointer;
+                }
+                .code-container {
+                    width: 100%;
+                    overflow-x: auto;
                 }
             `}</style>
         </div>

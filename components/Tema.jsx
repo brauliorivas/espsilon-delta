@@ -33,7 +33,9 @@ export default function Tema({
         <Chunk
             key={chunk.orden}
             contenido={chunk.contenido}
-            animacion_url={chunk.animacion_url}
+            animacion_url={chunk.animacion_url} 
+            codigo={chunk.codigo}
+            lenguaje={chunk.lenguaje}
             id={chunk.id}
             completed={completed_chunks.map((chunk) => chunk.id).includes(chunk.id) ? true : false}
             updateCompletionBar={updateCompletionBar}
