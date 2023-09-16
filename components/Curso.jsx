@@ -46,7 +46,6 @@ export default function Curso({ curso, temas, proyecto }) {
                 }
                 .left__pane {
                     position: sticky;
-                    height: calc(100vh - 122px);
                     width: 50%;
                     display: flex;
                     flex-direction: column;

@@ -86,6 +86,7 @@ export default function Chunk({ contenido, animacion_url, codigo, lenguaje, id, 
                 .code-container {
                     width: 100%;
                     overflow-x: auto;
+                    margin-bottom: 20px;
                 }
             `}</style>
         </div>
