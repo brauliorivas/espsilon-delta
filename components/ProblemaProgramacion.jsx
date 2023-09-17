@@ -5,14 +5,89 @@ import { useState } from 'react';
 import Ide from '@/components/Ide';
 
 export default function ProblemaProgramacion({ lenguaje, problema, explicacion, solucion_script, entradas, salidas, id, completed, updateCompletionBar, updateCompletedItems}) {
-  const [codeData, setData] = useState();
   const [theme, setTheme] = useState('monokai');
   const [fontSize, setFontSize] = useState(12);
   const [style, setStyle] = useState({ display: "none" });
   const [editorText, setEditorText] = useState('Escribe aquí tu solución');
   const [verSolucion, setVerSolucion] = useState(false);
+  const [salidaPrograma, setSalidaPrograma] = useState(null);
 
-  function submitCode() {}
+  async function submitCode() {
+    let lenguaje_judge_id;
+
+    if (lenguaje === 'python') {
+      lenguaje_judge_id = process.env.NODE_ENV === 'development' ? 10 : 25;
+    } else if (lenguaje === 'java') {
+      lenguaje_judge_id = 4;
+    } else if (lenguaje === 'cpp') {
+      lenguaje_judge_id = 12;
+    }
+
+    const url = `${process.env.NEXT_PUBLIC_RAPIDAPI_PROTOCOL}${process.env.NEXT_PUBLIC_RAPIDAPI_HOST}/submissions?base64_encoded=true&wait=true&fields=*`;
+
+    const source_code = btoa(editorText);
+
+    let datos = {
+      language_id: lenguaje_judge_id,
+      source_code: source_code,
+    };
+
+    let headersData;
+
+    if (entradas) {
+      if (entradas.length === 1) {
+        datos.stdin = btoa(entradas[0]);
+      } else {
+        datos.stdin = btoa(entradas);
+      }
+    }
+
+    if (salidas) {
+      if (salidas.length === 1) {
+        datos.expected_output = btoa(salidas[0]);
+      } else {
+        datos.expected_output = btoa(salidas);
+      }
+    }
+
+    if (process.env.NODE_ENV !== 'development') {
+      headersData = {
+        'Content-type': "application/json",
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
+        'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPIDAPI_HOST
+      } 
+    } else {
+      headersData = {
+        'Content-type': "application/json"
+      }
+    }
+
+    const options = {
+      method: 'POST',
+      headers: headersData,
+      body: JSON.stringify(datos)
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      handleResult(result)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function handleResult(result) {
+    console.log(result)
+    const codeResult = result.status.description;
+    const output = atob(result.stdout);
+
+    if (codeResult === "Accepted") {
+
+    } else {
+
+    }
+  }
 
   function changeVerSolucion() {
     setVerSolucion(true);
@@ -129,6 +204,7 @@ export default function ProblemaProgramacion({ lenguaje, problema, explicacion, 
           margin-left: auto;
           margin-right: auto;
           margin-top: 10px;
+          text-align: center;
         }
         .solution {
           padding: 0px 20px;

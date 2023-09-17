@@ -42,7 +42,9 @@ export default function Curso({ curso, temas, proyecto }) {
                     background-color: var(--background-dark);
                     padding-top: 30px;
                     display: flex;
+                    min-height: 100%;
                     flex-direction: row;
+                    min-height: 100vh;
                 }
                 .left__pane {
                     position: sticky;
